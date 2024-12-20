@@ -56,8 +56,8 @@ jobs:
             },
             {
               "id": "releases-ee",
-              "username": "${{ secrets.ANYPOINT_USERNAME }}",
-              "password": "${{ secrets.ANYPOINT_PASSWORD }}"
+              "username": "${{ secrets.RELEASES_USERNAME }}",
+              "password": "${{ secrets.RELEASES_PASSWORD }}"
             }]
             
       # Compila el proyecto, que genera un jar
