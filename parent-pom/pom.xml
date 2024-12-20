@@ -48,6 +48,7 @@
 							<target>Cloudhub-US-East-2</target>
 							<provider>MC</provider>
 							<muleVersion>${app.runtime}</muleVersion>
+							<javaVersion>17</javaVersion>
 							<server>cloudhub-deploy</server> <!--Read credentials from settings.xml-->
 							<applicationName>${project.name}</applicationName> <!--Generado de manera dinámica según el proyecto a desplegar-->
 							<replicas>1</replicas>
