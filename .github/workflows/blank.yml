@@ -76,3 +76,70 @@ jobs:
         with:
           name: artifacts
           path: check-in-papi-app/target/*.jar
+
+# Step to upload the artifact to Exchange (necessary for CH2.0)
+  exchange:
+    needs: build # Para iniciar este step se necesita haber completado el step build (linea 19)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys:
+            ${{ runner.os }}-maven-
+    - uses: actions/download-artifact@v4  # Descargar el jar generado en el step anterior (linea 63)
+      with:
+        name: artifacts
+
+    - uses: s4u/maven-settings-action@v2.6.0  # Settings de maven para publicar en Exchange
+      with:
+        servers: |
+          [{
+            "id": "anypoint-exchange-v3",
+            "username": "${{ secrets.ANYPOINT_USERNAME }}",
+            "password": "${{ secrets.ANYPOINT_PASSWORD }}"
+          }]
+    - name: Publish artifact to Exchange  # Ejecución de orden para publicar en el Exchange
+      run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy --file check-in-papi-app/pom.xml
+
+# Steps for executing the deployment against Choludhub Anypoint Platform
+  deploy:
+    needs: exchange # Para iniciar este step se necesita haber completado el step exchange (build para CH1)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys:
+            ${{ runner.os }}-maven-
+    - uses: actions/download-artifact@v4  # Descargar el jar generado en el step anterior (linea 63)
+      with:
+        name: artifacts
+
+    - uses: s4u/maven-settings-action@v2.6.0
+      with:
+        servers: |
+          [{
+            "id": "anypoint-exchange-v3",
+            "username": "${{ secrets.ANYPOINT_USERNAME }}",
+            "password": "${{ secrets.ANYPOINT_PASSWORD }}"
+          },
+          {
+            "id": "cloudhub-deploy",
+            "username": "${{ secrets.ANYPOINT_USERNAME }}",
+            "password": "${{ secrets.ANYPOINT_PASSWORD }}"
+          }]
+    - name: Deploy to CloudHub 2
+      env:
+        AUTHOR: "Jesus de Arias"
+      run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy --file check-in-papi-app/pom.xml -DmuleDeploy \
+          -Dap.client_id=${{ secrets.AP_CLIENT_ID }} \
+          -Dap.client_secret=${{ secrets.AP_CLIENT_SECRET }}
