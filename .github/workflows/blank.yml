@@ -47,17 +47,17 @@ jobs:
             [{
               "id": "anypoint-exchange-v3",
               "username": "${{ secrets.ANYPOINT_USERNAME }}",
-              "password": "${{ secrets.ANYPOINT_PASSWORD }}",
+              "password": "${{ secrets.ANYPOINT_PASSWORD }}"
             },
             {
               "id": "cloudhub-deploy",
               "username": "${{ secrets.ANYPOINT_USERNAME }}",
-              "password": "${{ secrets.ANYPOINT_PASSWORD }}",
+              "password": "${{ secrets.ANYPOINT_PASSWORD }}"
             },
             {
               "id": "releases-ee",
               "username": "${{ secrets.ANYPOINT_USERNAME }}",
-              "password": "${{ secrets.ANYPOINT_PASSWORD }}",
+              "password": "${{ secrets.ANYPOINT_PASSWORD }}"
             }]
             
       # Compila el proyecto, que genera un jar
