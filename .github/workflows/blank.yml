@@ -25,7 +25,7 @@ jobs:
       # Checks-out (download) your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       
-      # Guarda en cache las dependencias de Maven
+      # Guarda en cache las dependencias de Maven para aprovechar de despliegues anteriores
       - uses: actions/cache@v4
         with:
           path: ~/.m2/repository
