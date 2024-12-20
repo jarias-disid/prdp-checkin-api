@@ -72,7 +72,7 @@ jobs:
           mv $artifactName1 $artifactName2
 
       # Save the produced jar file to be deployed later
-      - uses: actions/upload-artifact@v
+      - uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: check-in-papi-app/target/*.jar
