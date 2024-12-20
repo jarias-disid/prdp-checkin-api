@@ -51,7 +51,7 @@
 							<server>cloudhub-deploy</server> <!--Read credentials from settings.xml-->
 							<applicationName>${project.name}</applicationName> <!--Generado de manera dinámica según el proyecto a desplegar-->
 							<replicas>1</replicas>
-      							<vCores>0.1</vCores>
+							<vCores>0.1</vCores>
 							<deploymentTimeout>240000</deploymentTimeout>
 							<properties>
 								<anypoint.platform.client_id>${ap.client_id}</anypoint.platform.client_id>
